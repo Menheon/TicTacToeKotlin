@@ -37,12 +37,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             //TODO something here
 
-            //An example of how to set the image
-            //you need to check if the field is empty
+            //An example of how to set the image is shown below
+            //you of course need to check if the field is empty
             //before setting a new image
             //and also if the turn is X or O
             image.setImageResource(R.drawable.kryds)
-            //then you need to update your int[] array also
+            //then you need to update your int[] array also to save the state
         }
 
     } //end of clicklistener
