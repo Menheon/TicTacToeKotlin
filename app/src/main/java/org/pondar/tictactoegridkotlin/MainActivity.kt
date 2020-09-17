@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // put a "O" and also make sure that you cannot
         // put a "O" or a "X" if there is already something.
 
-        if (view?.id == R.id.field1) {
+        if (view?.id == R.id.field0) {
             val image = view as ImageView
 
             Log.d("Field_Clicked", "field 1 pressed")
@@ -41,7 +41,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             //you of course need to check if the field is empty
             //before setting a new image
             //and also if the turn is X or O
-            image.setImageResource(R.drawable.kryds)
+            if (turn == 0)
+                image.setImageResource(R.drawable.kryds)
+            else
+                image.setImageResource(R.drawable.bolle)
             //then you need to update your int[] array also to save the state
         }
 
