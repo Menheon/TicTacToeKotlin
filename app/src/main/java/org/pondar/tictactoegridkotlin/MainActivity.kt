@@ -11,6 +11,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
     var turn = 0
+    private var fields = IntArray(9)
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,6 +20,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
         //we add clicklisteners, this, to all our fields
         table.setOnClickListener(this)
+        field0.setOnClickListener(this)
         field1.setOnClickListener(this)
         field2.setOnClickListener(this)
 
@@ -33,7 +36,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if (view?.id == R.id.field0) {
             val image = view as ImageView
 
-            Log.d("Field_Clicked", "field 1 pressed")
+            Log.d("Field_Clicked", "field 0 pressed")
 
             //TODO something here
 
@@ -45,7 +48,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 image.setImageResource(R.drawable.kryds)
             else
                 image.setImageResource(R.drawable.bolle)
-            //then you need to update your int[] array also to save the state
+            //then you need to update your field int[] array also to save the state
         }
 
     } //end of clicklistener
