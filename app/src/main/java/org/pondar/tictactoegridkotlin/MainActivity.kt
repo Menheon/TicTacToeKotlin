@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import kotlinx.android.synthetic.main.activity_main.*
+import org.pondar.tictactoegridkotlin.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -14,15 +14,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var fields = IntArray(9)
 
 
+    lateinit var binding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
         //we add clicklisteners, this, to all our fields
-        table.setOnClickListener(this)
-        field0.setOnClickListener(this)
-        field1.setOnClickListener(this)
-        field2.setOnClickListener(this)
+        binding.table.setOnClickListener(this)
+        binding.field0.setOnClickListener(this)
+        binding.field1.setOnClickListener(this)
+        binding.field2.setOnClickListener(this)
 
     }
 
