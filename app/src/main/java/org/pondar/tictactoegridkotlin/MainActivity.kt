@@ -9,11 +9,8 @@ import org.pondar.tictactoegridkotlin.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-
     var turn = 0
     private var fields = IntArray(9)
-
-
     lateinit var binding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +18,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        //we add clicklisteners, this, to all our fields
+        //we add click listeners, this, to all our fields
         binding.table.setOnClickListener(this)
         binding.field0.setOnClickListener(this)
         binding.field1.setOnClickListener(this)
