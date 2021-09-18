@@ -1,123 +1,147 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:text="@string/hello_world"
-        android:layout_height="wrap_content"/>
+        android:layout_height="8mm"
+        android:gravity="center"
+        android:textAlignment="center">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="46px"
+            android:textColor="@color/black"
+            android:text="@string/challenge_ai" />
+
+        <CheckBox
+            android:id="@+id/cbx_challenge_ai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/start_game_btn"
+        android:layout_width="match_parent"
+        android:layout_height="10mm"
+        android:textSize="45px"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:text="@string/start_new_game" />
 
     <GridLayout
+        android:id="@+id/table"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnCount="3"
-        android:id="@+id/table"
+        android:background="@color/black"
+        android:useDefaultMargins="true"
         >
 
         <ImageView
-            android:id="@+id/field0"
-            android:layout_height="0dp"
-            android:scaleType="fitXY"
-            android:layout_column="0"
-            android:layout_row="0"
+            android:id="@+id/field0_0"
             android:layout_width="0dp"
-            android:layout_columnWeight="1"
+            android:layout_height="0dp"
+            android:layout_row="0"
             android:layout_rowWeight="1"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:scaleType="fitXY"
             android:src="@drawable/blank" />
         <!-- NB: the layout_columnWeight and layout_rowWeight are only
              supported on API level 21 (Android 5.0) and above -->
 
         <ImageView
-            android:id="@+id/field1"
-            android:scaleType="fitXY"
+            android:id="@+id/field0_1"
             android:layout_width="0dp"
-            android:layout_column="1"
+            android:layout_height="0dp"
             android:layout_row="0"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_height="0dp"
-            android:src="@drawable/kryds" />
-
-        <ImageView
-            android:id="@+id/field2"
-            android:scaleType="fitXY"
-            android:layout_columnWeight="1"
-            android:layout_column="2"
-            android:layout_row="0"
-            android:layout_width="0dp"
-            android:layout_rowWeight="1"
-            android:layout_height="0dp"
-            android:src="@drawable/bolle" />
-
-
-        <ImageView
-            android:id="@+id/field3"
-            android:layout_column="0"
-            android:layout_row="1"
-            android:scaleType="fitXY"
-            android:layout_width="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_height="0dp"
-            android:src="@drawable/kryds" />
-
-        <ImageView
             android:layout_column="1"
-            android:layout_row="1"
-            android:id="@+id/field4"
-            android:scaleType="fitXY"
-            android:layout_width="0dp"
             android:layout_columnWeight="1"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
+            android:scaleType="fitXY"
             android:src="@drawable/blank" />
 
         <ImageView
-            android:id="@+id/field5"
-            android:layout_column="2"
-            android:layout_row="1"
-            android:scaleType="fitXY"
+            android:id="@+id/field0_2"
             android:layout_width="0dp"
-            android:layout_columnWeight="1"
             android:layout_height="0dp"
+            android:layout_row="0"
             android:layout_rowWeight="1"
-            android:src="@drawable/bolle" />
+            android:layout_column="2"
+            android:layout_columnWeight="1"
+            android:scaleType="fitXY"
+            android:src="@drawable/blank" />
 
 
         <ImageView
-            android:layout_column="0"
-            android:layout_row="2"
-            android:layout_rowWeight="1"
-            android:id="@+id/field6"
+            android:id="@+id/field1_0"
             android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_row="1"
+            android:layout_rowWeight="1"
+            android:layout_column="0"
             android:layout_columnWeight="1"
             android:scaleType="fitXY"
-            android:layout_height="0dp"
             android:src="@drawable/blank" />
 
         <ImageView
-            android:id="@+id/field7"
-            android:layout_column="1"
-            android:layout_row="2"
+            android:id="@+id/field1_1"
             android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_row="1"
+            android:layout_rowWeight="1"
+            android:layout_column="1"
             android:layout_columnWeight="1"
             android:scaleType="fitXY"
-            android:layout_rowWeight="1"
-            android:layout_height="0dp"
-            android:src="@drawable/bolle" />
+            android:src="@drawable/blank" />
 
         <ImageView
-            android:id="@+id/field8"
-            android:scaleType="fitXY"
-            android:layout_column="2"
-            android:layout_row="2"
+            android:id="@+id/field1_2"
             android:layout_width="0dp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
             android:layout_height="0dp"
+            android:layout_row="1"
+            android:layout_rowWeight="1"
+            android:layout_column="2"
+            android:layout_columnWeight="1"
+            android:scaleType="fitXY"
+            android:src="@drawable/blank" />
+
+
+        <ImageView
+            android:id="@+id/field2_0"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_row="2"
+            android:layout_rowWeight="1"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:scaleType="fitXY"
+            android:src="@drawable/blank" />
+
+        <ImageView
+            android:id="@+id/field2_1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_row="2"
+            android:layout_rowWeight="1"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:scaleType="fitXY"
+            android:src="@drawable/blank" />
+
+        <ImageView
+            android:id="@+id/field2_2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_row="2"
+            android:layout_rowWeight="1"
+            android:layout_column="2"
+            android:layout_columnWeight="1"
+            android:scaleType="fitXY"
             android:src="@drawable/blank" />
 
     </GridLayout>
