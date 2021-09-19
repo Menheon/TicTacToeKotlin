@@ -69,8 +69,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     // OnClick function for the Image Views
     override fun onClick(view: View?) {
-        if (!gameOver) {
-            val image: ImageView = view as ImageView
+        if (!gameOver && view is ImageView) {
+            val image: ImageView = view
             val parentTable = view.parent as GridLayout
             var stateField = 0
             for (i in 0 until parentTable.childCount) {
@@ -109,6 +109,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     // Helper function for the AI to decide which move to execute.
     private fun makeAIMove() {
+
         // Can be used for checking patterns where either the player or the AI has 2 fields marked already.
         fun checkWinningOrInterruptingFields(fieldValue: Int): Int {
             // Check horizontal fields.
@@ -139,7 +140,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             } else if (stateFields[0] == fieldValue && stateFields[4] == fieldValue && stateFields[8] == EMPTY) {
                 return 8
             }
-
             // Check bot left to top right diagonal fields
             if (stateFields[2] == EMPTY && stateFields[4] == fieldValue && stateFields[6] == fieldValue) {
                 return 2
@@ -148,11 +148,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             } else if (stateFields[2] == fieldValue && stateFields[4] == fieldValue && stateFields[6] == EMPTY) {
                 return 6
             }
+            // Checks for interruptable L-shaped patterns
+            if (fieldValue == X) {
+                if (stateFields[0] == fieldValue && stateFields[5] == fieldValue && stateFields[2] == EMPTY) {
+                    return 2
+                } else if (stateFields[1] == fieldValue && stateFields[8] == fieldValue && stateFields[2] == EMPTY) {
+                    return 2
+                } else if (stateFields[1] == fieldValue && (stateFields[6] == fieldValue || stateFields[3] == fieldValue) && stateFields[0] == EMPTY) {
+                    return 0
+                } else if (stateFields[7] == fieldValue && stateFields[2] == fieldValue && stateFields[8] == EMPTY) {
+                    return 8
+                }
+            }
             return -1
         }
 
         // Future opportunities - patterns where the AI already have one field marked.
         fun checkFutureOpportunityFields(fieldValue: Int): Int {
+
             // Check horizontal fields
             for (i in 0..6 step 3) {
                 if (stateFields[i] == EMPTY && stateFields[i + 1] == EMPTY && stateFields[i + 2] == fieldValue) {
@@ -163,7 +176,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     return i + 2
                 }
             }
-
             // Check vertical fields
             for (i in 0..2) {
                 if (stateFields[i] == EMPTY && stateFields[i + 3] == EMPTY && stateFields[i + 6] == fieldValue) {
@@ -174,7 +186,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     return i + 6
                 }
             }
-
             // Check top left to bot right diagonal fields
             if (stateFields[0] == EMPTY && stateFields[4] == EMPTY && stateFields[8] == fieldValue) {
                 return 0
@@ -183,7 +194,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             } else if (stateFields[0] == EMPTY && stateFields[4] == fieldValue && stateFields[8] == EMPTY) {
                 return 8
             }
-
             // Check bot left to top right diagonal fields
             if (stateFields[2] == EMPTY && stateFields[4] == EMPTY && stateFields[6] == fieldValue) {
                 return 2
@@ -300,6 +310,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         turn = PLAYER_1
         turnCounter = 0
         gameOver = false
+        isDraw = false
         for (i in stateFields.indices) {
             stateFields[i] = EMPTY
             (binding.table.getChildAt(i) as ImageView).setImageResource(R.drawable.blank)
