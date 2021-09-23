@@ -23,9 +23,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     // 0 if empty, 1 if X and 2 if O
     private var stateFields = IntArray(9)
+
+    // Field values
     private val EMPTY = 0
     private val X = 1
     private val O = 2
+
     private var turnCounter = 0
     private var gameOver = false
     private var isDraw = false
@@ -58,7 +61,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // Initialise array elements
         startGame(null)
 
-        //we add click listeners, this, to all our fields
+        // Add click listeners to all fields in the grid.
         binding.table.setOnClickListener(this)
         val childCount = binding.table.childCount
         for (i in 0 until childCount) {
@@ -70,17 +73,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     // OnClick function for the Image Views
     override fun onClick(view: View?) {
         if (!gameOver && view is ImageView) {
-            val image: ImageView = view
             val parentTable = view.parent as GridLayout
             var stateField = 0
+
+            // Find the clicked view.
             for (i in 0 until parentTable.childCount) {
                 if (parentTable.getChildAt(i).id == view.id) {
                     stateField = i
                 }
             }
+
+            // Change field state.
             if (turn == PLAYER_1) {
                 if (stateFields[stateField] == EMPTY) {
-                    image.setImageResource(R.drawable.kryds)
+                    view.setImageResource(R.drawable.kryds)
                     stateFields[stateField] = X
                     turn = PLAYER_2
                     turnCounter++
@@ -89,7 +95,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             } else if (turn == PLAYER_2 && isPVP) {
                 if (stateFields[stateField] == EMPTY) {
-                    image.setImageResource(R.drawable.bolle)
+                    view.setImageResource(R.drawable.bolle)
                     stateFields[stateField] = O
                     turn = PLAYER_1
                     turnCounter++
@@ -99,55 +105,61 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             checkGameStatus()
 
-            //AI feature
+            // Player vs. Computer feature.
             if (!gameOver && !isPVP) {
-                makeAIMove()
+                executeComputerMove()
                 checkGameStatus()
             }
         }
     }
 
-    // Helper function for the AI to decide which move to execute.
-    private fun makeAIMove() {
+    // Helper function for the program to decide which move to execute.
+    private fun executeComputerMove() {
 
-        // Can be used for checking patterns where either the player or the AI has 2 fields marked already.
-        fun checkWinningOrInterruptingFields(fieldValue: Int): Int {
+        // Can be used for checking patterns where either the player or the program has 2 fields marked already.
+        fun checkWinningOrInterruptingOrFutureFields(fieldValue: Int, checkFutureOpportunityFields: Boolean): Int {
+            var fieldValueOrEmpty: Int = fieldValue;
+            if (checkFutureOpportunityFields) {
+                fieldValueOrEmpty = EMPTY;
+            }
+
             // Check horizontal fields.
             for (i in 0..6 step 3) {
-                if (stateFields[i] == EMPTY && stateFields[i + 1] == fieldValue && stateFields[i + 2] == fieldValue) {
+                if (stateFields[i] == EMPTY && stateFields[i + 1] == fieldValueOrEmpty && stateFields[i + 2] == fieldValue) {
                     return i
-                } else if (stateFields[i] == fieldValue && stateFields[i + 1] == EMPTY && stateFields[i + 2] == fieldValue) {
+                } else if (stateFields[i] == fieldValue && stateFields[i + 1] == EMPTY && stateFields[i + 2] == fieldValueOrEmpty) {
                     return i + 1
-                } else if (stateFields[i] == fieldValue && stateFields[i + 1] == fieldValue && stateFields[i + 2] == EMPTY) {
+                } else if (stateFields[i] == fieldValueOrEmpty && stateFields[i + 1] == fieldValue && stateFields[i + 2] == EMPTY) {
                     return i + 2
                 }
             }
             // Check vertical fields
             for (i in 0..2) {
-                if (stateFields[i] == EMPTY && stateFields[i + 3] == fieldValue && stateFields[i + 6] == fieldValue) {
+                if (stateFields[i] == EMPTY && stateFields[i + 3] == fieldValueOrEmpty && stateFields[i + 6] == fieldValue) {
                     return i
-                } else if (stateFields[i] == fieldValue && stateFields[i + 3] == EMPTY && stateFields[i + 6] == fieldValue) {
+                } else if (stateFields[i] == fieldValue && stateFields[i + 3] == EMPTY && stateFields[i + 6] == fieldValueOrEmpty) {
                     return i + 3
-                } else if (stateFields[i] == fieldValue && stateFields[i + 3] == fieldValue && stateFields[i + 6] == EMPTY) {
+                } else if (stateFields[i] == fieldValueOrEmpty && stateFields[i + 3] == fieldValue && stateFields[i + 6] == EMPTY) {
                     return i + 6
                 }
             }
-            // Check top left to bot right diagonal fields
-            if (stateFields[0] == EMPTY && stateFields[4] == fieldValue && stateFields[8] == fieldValue) {
+            // Check top left to bot right diagonal fields.
+            if (stateFields[0] == EMPTY && stateFields[4] == fieldValueOrEmpty && stateFields[8] == fieldValue) {
                 return 0
-            } else if (stateFields[0] == fieldValue && stateFields[4] == EMPTY && stateFields[8] == fieldValue) {
+            } else if (stateFields[0] == fieldValue && stateFields[4] == EMPTY && stateFields[8] == fieldValueOrEmpty) {
                 return 4
-            } else if (stateFields[0] == fieldValue && stateFields[4] == fieldValue && stateFields[8] == EMPTY) {
+            } else if (stateFields[0] == fieldValueOrEmpty && stateFields[4] == fieldValue && stateFields[8] == EMPTY) {
                 return 8
             }
             // Check bot left to top right diagonal fields
-            if (stateFields[2] == EMPTY && stateFields[4] == fieldValue && stateFields[6] == fieldValue) {
+            if (stateFields[2] == EMPTY && stateFields[4] == fieldValueOrEmpty && stateFields[6] == fieldValue) {
                 return 2
-            } else if (stateFields[2] == fieldValue && stateFields[4] == EMPTY && stateFields[6] == fieldValue) {
+            } else if (stateFields[2] == fieldValue && stateFields[4] == EMPTY && stateFields[6] == fieldValueOrEmpty) {
                 return 4
-            } else if (stateFields[2] == fieldValue && stateFields[4] == fieldValue && stateFields[6] == EMPTY) {
+            } else if (stateFields[2] == fieldValueOrEmpty && stateFields[4] == fieldValue && stateFields[6] == EMPTY) {
                 return 6
             }
+
             // Checks for interruptable L-shaped patterns
             if (fieldValue == X) {
                 if (stateFields[0] == fieldValue && stateFields[5] == fieldValue && stateFields[2] == EMPTY) {
@@ -163,69 +175,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             return -1
         }
 
-        // Future opportunities - patterns where the AI already have one field marked.
-        fun checkFutureOpportunityFields(fieldValue: Int): Int {
-
-            // Check horizontal fields
-            for (i in 0..6 step 3) {
-                if (stateFields[i] == EMPTY && stateFields[i + 1] == EMPTY && stateFields[i + 2] == fieldValue) {
-                    return i
-                } else if (stateFields[i] == fieldValue && stateFields[i + 1] == EMPTY && stateFields[i + 2] == EMPTY) {
-                    return i + 2
-                } else if (stateFields[i] == EMPTY && stateFields[i + 1] == fieldValue && stateFields[i + 2] == EMPTY) {
-                    return i + 2
-                }
-            }
-            // Check vertical fields
-            for (i in 0..2) {
-                if (stateFields[i] == EMPTY && stateFields[i + 3] == EMPTY && stateFields[i + 6] == fieldValue) {
-                    return i
-                } else if (stateFields[i] == fieldValue && stateFields[i + 3] == EMPTY && stateFields[i + 6] == EMPTY) {
-                    return i + 6
-                } else if (stateFields[i] == EMPTY && stateFields[i + 3] == fieldValue && stateFields[i + 6] == EMPTY) {
-                    return i + 6
-                }
-            }
-            // Check top left to bot right diagonal fields
-            if (stateFields[0] == EMPTY && stateFields[4] == EMPTY && stateFields[8] == fieldValue) {
-                return 0
-            } else if (stateFields[0] == fieldValue && stateFields[4] == EMPTY && stateFields[8] == EMPTY) {
-                return 8
-            } else if (stateFields[0] == EMPTY && stateFields[4] == fieldValue && stateFields[8] == EMPTY) {
-                return 8
-            }
-            // Check bot left to top right diagonal fields
-            if (stateFields[2] == EMPTY && stateFields[4] == EMPTY && stateFields[6] == fieldValue) {
-                return 2
-            } else if (stateFields[2] == fieldValue && stateFields[4] == EMPTY && stateFields[6] == EMPTY) {
-                return 6
-            } else if (stateFields[2] == EMPTY && stateFields[4] == fieldValue && stateFields[6] == EMPTY) {
-                return 6
-            }
-            return -1
-        }
-
         // Checks available fields in the middle, corners and lastly a random int for the rest.
         fun checkStartingFields(): Int {
             if (stateFields[4] == EMPTY) {
                 return 4
             } else if (stateFields[8] == EMPTY) {
                 return 8
-            } else {
-                var rngField = 0
-                while (stateFields[rngField] != EMPTY) {
-                    rngField = Random.nextInt(0, 9)
-                }
-                return rngField
             }
+            return -1
         }
 
         // Retrieves the field index to mark
-        var fieldToCheck = checkWinningOrInterruptingFields(O) // Checks for winnable fields
+        var fieldToCheck = checkWinningOrInterruptingOrFutureFields(O, false) // Checks for winnable fields
         if (fieldToCheck == -1) {
-            fieldToCheck = checkWinningOrInterruptingFields(X) // Checks for interruptible fields.
+            fieldToCheck = checkWinningOrInterruptingOrFutureFields(X, false) // Checks for interruptible fields.
             if (fieldToCheck == -1) {
-                fieldToCheck = checkFutureOpportunityFields(O)
+                fieldToCheck = checkWinningOrInterruptingOrFutureFields(O, true) // Checks for future possibility fields.
                 if (fieldToCheck == -1) {
                     fieldToCheck = checkStartingFields()
                 }
@@ -283,7 +248,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             if (!gameOver && turnCounter == 9) {
                 isDraw = true
                 toastText = gameDrawText
-
                 return true
             }
             return false
@@ -298,9 +262,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 MediaPlayer.create(this, R.raw.fail).start()
             }
             Toast.makeText(
-                this,
-                toastText,
-                Toast.LENGTH_SHORT
+                    this,
+                    toastText,
+                    Toast.LENGTH_SHORT
             ).show()
         }
     }
@@ -316,9 +280,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             (binding.table.getChildAt(i) as ImageView).setImageResource(R.drawable.blank)
         }
         Toast.makeText(
-            this,
-            this.resources.getString(R.string.starting_new_game),
-            Toast.LENGTH_SHORT
+                this,
+                this.resources.getString(R.string.starting_new_game),
+                Toast.LENGTH_SHORT
         ).show()
     }
 }
